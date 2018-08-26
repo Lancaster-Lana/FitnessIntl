@@ -1,0 +1,199 @@
+﻿<NavigationPage x:Class="FitnessTrackerPlus.Views.Measurement.MeasurementLog" 
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+           xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
+           xmlns:toolkit_input="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+           xmlns:toolkit_primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=System.Windows.Controls.Toolkit"
+           xmlns:data="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data"
+           xmlns:data_primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=System.Windows.Controls.Data"
+           xmlns:ria_controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices"
+           xmlns:fitnesstrackerplus="clr-namespace:FitnessTrackerPlus.Web.Services"
+           xmlns:fitnesstrackerplus_converters="clr-namespace:FitnessTrackerPlus.Converters"
+           xmlns:fitnesstrackerplus_calendar="clr-namespace:FitnessTrackerPlus.Utility">
+    <NavigationPage.Resources>
+        <fitnesstrackerplus:MeasurementContext x:Key="MeasurementContext" />
+        <fitnesstrackerplus_converters:MeasurementUnitConverter x:Key="MeasurementUnitConverter" />
+        <Style x:Key="MeasurementLogHeaderStyle" BasedOn="{StaticResource HeaderTextStyle}" TargetType="TextBlock">
+            <Setter Property="Text" Value="Today's Measurement Log" />
+        </Style>
+        <Style x:Key="DeleteSelectedStyle" TargetType="Button">
+            <Setter Property="Content" Value="Delete Selected" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+        </Style>
+        <Style x:Key="UpdateImageStyle" TargetType="Button">
+            <Setter Property="Content" Value="Update Image" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+        </Style>
+        <Style x:Key="CustomMeasurementButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="10,0,0,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Content" Value="Custom Measurement" />
+        </Style>
+        <Style x:Key="MeasurementEntryStackPanelStyle" TargetType="StackPanel">
+            <Setter Property="Margin" Value="0,15,0,0" />
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
+        <Style x:Key="DataGridImageStackPanelStyle" TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
+        <Style x:Key="MeasurementEntryComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,0,10,0" />
+            <Setter Property="Height" Value="20" />
+        </Style>
+        <Style x:Key="CurrentImageBorderStyle" TargetType="Border">
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="BorderBrush" Value="#FF000000" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="200" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style x:Key="CurrentImageStyle" TargetType="Image">
+            <Setter Property="Margin" Value="10,0,0,0" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Height" Value="200" />
+            <Setter Property="Stretch" Value="Fill" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Source" Value="/Images/image_unavailable.png" />
+        </Style>
+        <Style x:Key="DataGridColumnHeaderCheckBox" TargetType="data_primitives:DataGridColumnHeader">
+            <Setter Property="Foreground" Value="#FF444444" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="10.5" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="SeparatorBrush" Value="#FFC9CACA" />
+            <Setter Property="Padding" Value="4,4,5,4" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="data_primitives:DataGridColumnHeader">
+                        <Grid Name="Root">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Rectangle x:Name="BackgroundRectangle" Stretch="Fill" Fill="#FF1F3B53" Grid.ColumnSpan="2" Grid.RowSpan="2"  />
+                            <Rectangle x:Name="BackgroundGradient" Stretch="Fill" Grid.ColumnSpan="2" Grid.RowSpan="2" >
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint=".7,0" EndPoint=".7,1">
+                                        <GradientStop Color="#FFFFFFFF" Offset="0.015" />
+                                        <GradientStop Color="#F9FFFFFF" Offset="0.375" />
+                                        <GradientStop Color="#E5FFFFFF" Offset="0.6" />
+                                        <GradientStop Color="#C6FFFFFF" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <CheckBox x:Name="CheckAll" Grid.RowSpan="3" Grid.ColumnSpan="3" Style="{StaticResource DataGridCheckBox}" Checked="CheckAll_Checked" Unchecked="CheckAll_Checked"  />
+                            <Rectangle Name="VerticalSeparator" Grid.RowSpan="2" Grid.Column="2" Width="1" VerticalAlignment="Stretch" Fill="{TemplateBinding SeparatorBrush}" Visibility="{TemplateBinding SeparatorVisibility}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </NavigationPage.Resources>
+    <toolkit:DockPanel Style="{StaticResource LogDockPanelStyle}">
+        <toolkit:DockPanel Style="{StaticResource HeaderDockPanelStyle}">
+            <TextBlock Style="{StaticResource MeasurementLogHeaderStyle}" />
+            <TextBlock x:Name="SelectedDate" Style="{StaticResource SelectedDateTextStyle}" />
+            <ProgressBar x:Name="ProgressBar" Style="{StaticResource ProgressBarStyle}" />
+        </toolkit:DockPanel>
+        <StackPanel Style="{StaticResource CalendarPanelStyle}">
+            <toolkit:GlobalCalendar x:Name="Calendar" Style="{StaticResource CalendarStyle}">
+                <toolkit:GlobalCalendar.CalendarDayButtonStyleSelector>
+                    <fitnesstrackerplus_calendar:ValidMeasurementLogDateSelector>
+                        <fitnesstrackerplus_calendar:ValidMeasurementLogDateSelector.ValidLogDateStyle>
+                            <Style BasedOn="{StaticResource BasicDayButtonStyle}" TargetType="toolkit_primitives:GlobalCalendarDayButton">
+                                <Setter Property="Background" Value="#FF999999" />
+                            </Style>
+                        </fitnesstrackerplus_calendar:ValidMeasurementLogDateSelector.ValidLogDateStyle>
+                        <fitnesstrackerplus_calendar:ValidMeasurementLogDateSelector.InvalidLogDateStyle>
+                            <Style BasedOn="{StaticResource BasicDayButtonStyle}" TargetType="toolkit_primitives:GlobalCalendarDayButton">
+                                <Setter Property="Background" Value="#FFFFFFFF" />
+                            </Style>
+                        </fitnesstrackerplus_calendar:ValidMeasurementLogDateSelector.InvalidLogDateStyle>
+                    </fitnesstrackerplus_calendar:ValidMeasurementLogDateSelector>
+                </toolkit:GlobalCalendar.CalendarDayButtonStyleSelector>
+            </toolkit:GlobalCalendar>
+        </StackPanel>
+        <StackPanel Style="{StaticResource LogPanelStyle}">
+            <StackPanel>
+                <StackPanel Style="{StaticResource MeasurementEntryStackPanelStyle}">
+                    <ComboBox x:Name="Measurements" Style="{StaticResource MeasurementEntryComboBoxStyle}" DisplayMemberPath="measurement_name" />
+                    <Button x:Name="CustomMeasurement" Style="{StaticResource CustomMeasurementButtonStyle}" />
+                </StackPanel>
+            </StackPanel>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="200" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Grid.Column="0">
+                    <data:DataGrid x:Name="MeasurementLogGrid" Style="{StaticResource DataGrid}" ItemsSource="{Binding Path=Data, ElementName=MeasurementData}" >
+                        <data:DataGrid.Columns>
+                            <data:DataGridTemplateColumn Header="Measurements" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                                <data:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=Measurement.measurement_name}" Style="{StaticResource DataGridTextBlockCentered}" />
+                                    </DataTemplate>
+                                </data:DataGridTemplateColumn.CellTemplate>
+                            </data:DataGridTemplateColumn>
+                            <data:DataGridTemplateColumn Header="Value" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                                <data:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=value}" Style="{StaticResource DataGridTextBlockCentered}" />
+                                    </DataTemplate>
+                                </data:DataGridTemplateColumn.CellTemplate>
+                                <data:DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <TextBox Text="{Binding Path=value, Mode=TwoWay}" />
+                                    </DataTemplate>
+                                </data:DataGridTemplateColumn.CellEditingTemplate>
+                            </data:DataGridTemplateColumn>
+                            <data:DataGridTemplateColumn Header="Unit" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                                <data:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Path=MeasurementUnit.unit}" Style="{StaticResource DataGridTextBlock}" />
+                                    </DataTemplate>
+                                </data:DataGridTemplateColumn.CellTemplate>
+                                <data:DataGridTemplateColumn.CellEditingTemplate>
+                                    <DataTemplate>
+                                        <ComboBox x:Name="Units" DisplayMemberPath="MeasurementUnit.unit" ItemsSource="{Binding Path=Measurement.MeasurementsUnits}" SelectedItem="{Binding Path=MeasurementUnit, Mode=TwoWay, Converter={StaticResource MeasurementUnitConverter}}" />
+                                    </DataTemplate>
+                                </data:DataGridTemplateColumn.CellEditingTemplate>
+                            </data:DataGridTemplateColumn>
+                            <data:DataGridTemplateColumn HeaderStyle="{StaticResource DataGridColumnHeaderCheckBox}">
+                                <data:DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <CheckBox x:Name="DeleteEntry" Style="{StaticResource DataGridCheckBox}" />
+                                    </DataTemplate>
+                                </data:DataGridTemplateColumn.CellTemplate>
+                            </data:DataGridTemplateColumn>
+                        </data:DataGrid.Columns>
+                    </data:DataGrid>
+                    <ria_controls:DomainDataSource x:Name="MeasurementData" DomainContext="{StaticResource MeasurementContext}" QueryName="GetMeasurementLogEntries" AutoLoad="True">
+                        <ria_controls:DomainDataSource.QueryParameters>
+                            <ria_controls:Parameter ParameterName="entry_date" Value="{Binding ElementName=Calendar, Path=SelectedDate}" />
+                        </ria_controls:DomainDataSource.QueryParameters>
+                    </ria_controls:DomainDataSource>
+                    <Button x:Name="DeleteSelected" Style="{StaticResource DeleteSelectedStyle}" />
+                </StackPanel>
+                <StackPanel Grid.Column="1">
+                    <Border Style="{StaticResource CurrentImageBorderStyle}">
+                        <Image x:Name="CurrentImage" Style="{StaticResource CurrentImageStyle}" />
+                    </Border>
+                    <Button x:Name="UpdateImage" Style="{StaticResource UpdateImageStyle}" />
+                </StackPanel>
+            </Grid>
+        </StackPanel>
+    </toolkit:DockPanel>
+</NavigationPage>

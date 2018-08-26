@@ -1,0 +1,72 @@
+﻿<ContentView x:Class="FitnessTrackerPlus.Views.Food.CustomFood"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:data_dataform="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.DataForm.Toolkit">
+    <ContentView.Resources>
+        <Style x:Key="CustomFoodFormStyle" TargetType="data_dataform:DataForm">
+            <Setter Property="AutoEdit" Value="True" />
+            <Setter Property="AutoGenerateFields" Value="False" />
+            <Setter Property="Foreground" Value="#FF000000" />
+        </Style>
+        <Style x:Key="NutritionFactsTextStyle" TargetType="TextBlock">
+            <Setter Property="Text" Value="Nutrition Facts" />
+            <Setter Property="FontSize" Value="18" />
+            <Setter Property="Margin" Value="2,0,0,0" />
+        </Style>
+        <Style x:Key="RectangleStyle" TargetType="Rectangle">
+            <Setter Property="Fill" Value="#FF000000" />
+            <Setter Property="Stroke" Value="#FF000000" />
+            <Setter Property="Margin" Value="0,5,0,0" />
+        </Style>
+        <Style x:Key="RectangleThinStyle" BasedOn="{StaticResource RectangleStyle}" TargetType="Rectangle">
+            <Setter Property="Height" Value="2" />
+        </Style>
+        <Style x:Key="RectangleThickStyle" BasedOn="{StaticResource RectangleStyle}" TargetType="Rectangle">
+            <Setter Property="Height" Value="5" />
+        </Style>
+        <Style x:Key="TextBoxStyle" TargetType="TextBox">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="TextAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="LargeTextBoxStyle" BasedOn="{StaticResource TextBoxStyle}" TargetType="TextBox">
+            <Setter Property="Width" Value="200" />
+        </Style>
+        <Style x:Key="SmallTextBoxStyle" BasedOn="{StaticResource TextBoxStyle}" TargetType="TextBox">
+            <Setter Property="Width" Value="50" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+    </ContentView.Resources>
+    <data_dataform:DataForm x:Name="CustomFoodForm" Style="{StaticResource CustomFoodFormStyle}">
+        <data_dataform:DataForm.EditTemplate>
+            <DataTemplate>
+                <StackLayout>
+                    <TextBlock Style="{StaticResource NutritionFactsTextStyle}" />
+                    <Rectangle Style="{StaticResource RectangleThinStyle}" />
+                    <data_dataform:DataField>
+                        <TextBox Text="{Binding Path=name, Mode=TwoWay}" Style="{StaticResource LargeTextBoxStyle}" />
+                    </data_dataform:DataField>
+                    <data_dataform:DataField>
+                        <TextBox Text="{Binding Path=serving_size, Mode=TwoWay}" Style="{StaticResource LargeTextBoxStyle}" />
+                    </data_dataform:DataField>
+                    <Rectangle Style="{StaticResource RectangleThickStyle}" />
+                    <data_dataform:DataField>
+                        <TextBox Text="{Binding Path=calories, Mode=TwoWay}" Style="{StaticResource SmallTextBoxStyle}" />
+                    </data_dataform:DataField>
+                    <Rectangle Style="{StaticResource RectangleThickStyle}" />
+                    <data_dataform:DataField>
+                        <TextBox Text="{Binding Path=fat, Mode=TwoWay}" Style="{StaticResource SmallTextBoxStyle}" />
+                    </data_dataform:DataField>
+                    <Rectangle Style="{StaticResource RectangleThinStyle}" />
+                    <data_dataform:DataField>
+                        <TextBox Text="{Binding Path=carbohydrate, Mode=TwoWay}" Style="{StaticResource SmallTextBoxStyle}" />
+                    </data_dataform:DataField>
+                    <Rectangle Style="{StaticResource RectangleThinStyle}" />
+                    <data_dataform:DataField>
+                        <TextBox Text="{Binding Path=protein, Mode=TwoWay}" Style="{StaticResource SmallTextBoxStyle}" />
+                    </data_dataform:DataField>
+                    <Rectangle Style="{StaticResource RectangleThickStyle}" />
+                </StackLayout>
+            </DataTemplate>
+        </data_dataform:DataForm.EditTemplate>
+    </data_dataform:DataForm>
+</ContentView>

@@ -1,0 +1,24 @@
+﻿<ContentView x:Class="FitnessIntl.Views.ExerciseSummary"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:FitnessIntl.Converters" >
+    <ContentView.Resources>
+        <converters:StringFormatConverter x:Key="SummaryConverter" />
+    </ContentView.Resources>
+
+    <StackLayout Style="{StaticResource SummaryStackPanelStyle}">
+        <Frame>
+            <Label Text="Exercise Summary" />
+        </Frame>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <StackLayout Grid.Row="0" >
+                <!--<Editor Text="{Binding Path=TotalCalories, Converter={StaticResource SummaryConverter}, ConverterParameter='Total Calories Burned: {0}'}" />-->
+            </StackLayout>
+        </Grid>
+    </StackLayout>
+
+</ContentView>

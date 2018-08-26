@@ -1,0 +1,65 @@
+﻿<NavigationPage x:Class="FitnessTrackerPlus.Views.Journal.JournalSettings" 
+                 xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+                 Title="FitnessTrackerPlus - Public Journal Settings">
+    <NavigationPage.Resources>
+        <Style x:Key="JournalSettingsHeaderStyle" BasedOn="{StaticResource HeaderTextStyle}" TargetType="TextBlock">
+            <Setter Property="Text" Value="Public Journal Settings" />
+        </Style>
+        <Style x:Key="JournalSettingsPanelStyle" TargetType="StackPanel">
+            <Setter Property="Margin" Value="10,10" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="MaxWidth" Value="600" />
+        </Style>
+        <Style x:Key="AboutTextStackPanelStyle" TargetType="StackPanel">
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
+        <Style x:Key="JournalSettingsTextStyle" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+            <Setter Property="Width" Value="120" />
+        </Style>
+        <Style x:Key="AboutTextBoxStyle" TargetType="TextBox">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="10,10,0,0" />
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Height" Value="200" />
+            <Setter Property="AcceptsReturn" Value="True" />
+        </Style>
+        <Style x:Key="MySpaceTextBoxStyle" TargetType="TextBox">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="10,10,0,0" />
+            <Setter Property="Width" Value="400" />
+            <Setter Property="Height" Value="25" />
+        </Style>
+        <Style x:Key="JournalCheckBoxStyle" TargetType="CheckBox">
+            <Setter Property="Margin" Value="0,10" />
+        </Style>
+        <Style x:Key="JournalSettingsButtonStyle" TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="0,10" />
+        </Style>
+    </NavigationPage.Resources>
+    <StackLayout>
+        <Entry Style="{StaticResource JournalSettingsHeaderStyle}" />
+        <StackLayout x:Name="JournalSettingsPanel" Style="{StaticResource JournalSettingsPanelStyle}">
+            <StackPanel Style="{StaticResource AboutTextStackPanelStyle}">
+                <TextBlock Text="About Me Text:" Style="{StaticResource JournalSettingsTextStyle}" />
+                <TextBox x:Name="AboutText" Text="{Binding Path=AboutText}" Style="{StaticResource AboutTextBoxStyle}" />
+            </StackPanel>
+            <CheckBox x:Name="ShareJournal" Content="Share Journal:" IsChecked="{Binding Path=ShareJournal}" Style="{StaticResource JournalCheckBoxStyle}"  />
+            <CheckBox x:Name="ShareFoods" Content="Share Foods:" IsChecked="{Binding Path=ShareFoods}" Style="{StaticResource JournalCheckBoxStyle}" />
+            <CheckBox x:Name="ShareExercises" Content="Share Exercises:" IsChecked="{Binding Path=ShareExercises}" Style="{StaticResource JournalCheckBoxStyle}" />
+            <CheckBox x:Name="ShareMeasurements" Content="Share Measurements:" IsChecked="{Binding Path=ShareMeasurements}" Style="{StaticResource JournalCheckBoxStyle}" />
+            <CheckBox x:Name="ShareImages" Content="Share Images:" IsChecked="{Binding Path=ShareImages}" Style="{StaticResource JournalCheckBoxStyle}" />
+            <CheckBox x:Name="EnableComments" Content="Enable Comments:" IsChecked="{Binding Path=EnableComments}" Style="{StaticResource JournalCheckBoxStyle}" />
+            <CheckBox x:Name="EnableMySpace" Content="Enable MySpace Sharing:" IsChecked="{Binding Path=EnableComments}" Style="{StaticResource JournalCheckBoxStyle}" />
+            <StackPanel Style="{StaticResource AboutTextStackPanelStyle}">
+                <TextBlock Text="MySpace Display Name:" Style="{StaticResource JournalSettingsTextStyle}" />
+                <TextBox x:Name="MySpaceName" Text="{Binding Path=MySpaceName}" Style="{StaticResource MySpaceTextBoxStyle}" />
+            </StackPanel>
+            <Button x:Name="SaveChanges" Content="Save Changes" Style="{StaticResource JournalSettingsButtonStyle}" />
+        </StackLayout>
+    </StackLayout>
+</NavigationPage>

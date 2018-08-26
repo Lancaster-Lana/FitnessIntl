@@ -1,0 +1,291 @@
+﻿<navigation:Page x:Class="FitnessTrackerPlus.Views.Journal.PublicJournal" 
+                xmlns="http://xamarin.com/schemas/2014/forms"
+                 xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                 xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
+                 xmlns:data="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data"
+                 xmlns:data_form="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.DataForm.Toolkit"
+                 xmlns:controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls"
+                 xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
+                 xmlns:fitnesstrackerplus="clr-namespace:FitnessTrackerPlus.Views.Dashboard"
+                 xmlns:fitnesstrackerplus_calendar="clr-namespace:FitnessTrackerPlus.Utility">
+    <navigation:Page.Resources>
+        <Style x:Key="ReadOnlyDataGrid" TargetType="data:DataGrid">
+            <Setter Property="AutoGenerateColumns" Value="False" />
+            <Setter Property="IsReadOnly" Value="True" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+            <Setter Property="HorizontalScrollBarVisibility" Value="Auto" />
+            <Setter Property="CanUserResizeColumns" Value="True" />
+            <Setter Property="SelectionMode" Value="Single" />
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Setter Property="ColumnWidth" Value="SizeToHeader" />
+        </Style>
+        <Style x:Key="ProfileStackPanelStyle" TargetType="StackPanel">
+            <Setter Property="toolkit:DockPanel.Dock" Value="Left" />
+            <Setter Property="Margin" Value="0,0,10,0" />
+        </Style>
+        <Style x:Key="ImageBorderStyle" TargetType="Border">
+            <Setter Property="BorderBrush" Value="#FF000000" />
+            <Setter Property="Background" Value="#FFFFFFFF" />
+            <Setter Property="BorderThickness" Value="1" />
+            <Setter Property="Width" Value="175" />
+            <Setter Property="Height" Value="200" />
+        </Style>
+        <Style x:Key="ImageStyle" TargetType="Image">
+            <Setter Property="Stretch" Value="Fill" />
+        </Style>
+        <Style x:Key="ImageTextStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,10,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="MeasurementListStyle" TargetType="ListBox">
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Margin" Value="10,10,0,0" />
+            <Setter Property="MinHeight" Value="150" />
+            <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden" />
+        </Style>
+        <Style x:Key="MeasurementListItemStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="0,5,0,0" />
+        </Style>
+        <Style x:Key="CommentHeaderStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Margin" Value="0,20,0,10" />
+        </Style>
+        <Style x:Key="CommentAreaStyle" TargetType="Grid">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="CommentFormStyle" TargetType="Grid">
+            <Setter Property="Margin" Value="0,10,0,0" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+        </Style>
+        <Style x:Key="CommentEntryDataStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="300" />
+            <Setter Property="Width" Value="500" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Margin" Value="10,0,0,5" />
+        </Style>
+        <Style x:Key="CommentEntryTextBoxStyle" TargetType="TextBox">
+            <Setter Property="Height" Value="25" />
+            <Setter Property="Width" Value="250" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="Margin" Value="10,0,0,5" />
+        </Style>
+        <Style x:Key="CommentSubmitStyle" TargetType="Button">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="10,10,0,0" />
+        </Style>
+        <Style x:Key="PublicJournalCalendarStyle" TargetType="controls:Calendar">
+            <Setter Property="SelectionMode" Value="SingleDate" />
+            <Setter Property="toolkit:DockPanel.Dock" Value="Right" />
+        </Style>
+    </navigation:Page.Resources>
+    <toolkit:DockPanel LastChildFill="True">
+        <controls:Calendar x:Name="Calendar" Style="{StaticResource PublicJournalCalendarStyle}"  />
+        <StackPanel x:Name="MainStackPanel" Style="{StaticResource ProfileStackPanelStyle}" >
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="AboutText" Grid.Column="0" />
+                <StackPanel Grid.Column="1">
+                    <Border Style="{StaticResource ImageBorderStyle}">
+                        <Image x:Name="CurrentImage" Style="{StaticResource ImageStyle}" />
+                    </Border>
+                    <TextBlock Text="Current Image" Style="{StaticResource ImageTextStyle}" />
+                </StackPanel>
+            </Grid>
+            <data:DataGrid x:Name="FoodLogGrid" Style="{StaticResource ReadOnlyDataGrid}">
+                <data:DataGrid.Columns>
+                    <data:DataGridTemplateColumn Header="Foods" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Food.name}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Servings" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=servings}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Serving Size" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Food.serving_size}" Style="{StaticResource DataGridTextBlock}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Fat" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Food.fat}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Carb" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Food.carbohydrate}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Pro" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Food.protein}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                </data:DataGrid.Columns>
+            </data:DataGrid>
+            <data:DataGrid x:Name="CardioLogGrid" Style="{StaticResource ReadOnlyDataGrid}">
+                <data:DataGrid.Columns>
+                    <data:DataGridTemplateColumn Header="Cardio" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Exercise.exercise_name}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Duration" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=duration, StringFormat='HH:mm:ss'}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Distance" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=distance}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Incline" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=incline}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Calories" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=calories}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                </data:DataGrid.Columns>
+            </data:DataGrid>
+            <data:DataGrid x:Name="WeightTrainingLogGrid" Style="{StaticResource ReadOnlyDataGrid}">
+                <data:DataGrid.Columns>
+                    <data:DataGridTemplateColumn Header="Weight Training" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Exercise.exercise_name}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Reps" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=reps}" Style="{StaticResource DataGridTextBlock}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Weight" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=weight}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Calories" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=calories}" Style="{StaticResource DataGridTextBlock}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                </data:DataGrid.Columns>
+            </data:DataGrid>
+            <data:DataGrid x:Name="ActivityLogGrid" Style="{StaticResource ReadOnlyDataGrid}">
+                <data:DataGrid.Columns>
+                    <data:DataGridTemplateColumn Header="Activities" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Exercise.exercise_name}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Duration" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=duration, StringFormat='HH:mm:ss'}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Calories" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=calories}" Style="{StaticResource DataGridTextBlock}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                </data:DataGrid.Columns>
+            </data:DataGrid>
+            <data:DataGrid x:Name="MeasurementLogGrid" Style="{StaticResource ReadOnlyDataGrid}">
+                <data:DataGrid.Columns>
+                    <data:DataGridTemplateColumn Header="Measurements" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Measurement.measurement_name}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Value" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=value}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Unit" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=MeasurementUnit.unit}" Style="{StaticResource DataGridTextBlock}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                </data:DataGrid.Columns>
+            </data:DataGrid>
+            <Grid x:Name="CommentArea" Style="{StaticResource CommentAreaStyle}" />
+            <Grid x:Name="CommentForm" Style="{StaticResource CommentFormStyle}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <TextBlock Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="Leave Your Comments" Style="{StaticResource CommentHeaderStyle}" />
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Name:" />
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Website (Optional):" />
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Comment:" />
+                <TextBox x:Name="Name" Grid.Row="1" Grid.Column="1" Style="{StaticResource CommentEntryTextBoxStyle}" />
+                <TextBox x:Name="Website" Grid.Row="2" Grid.Column="1" Style="{StaticResource CommentEntryTextBoxStyle}" />
+                <TextBox x:Name="Comment" Grid.Row="3" Grid.Column="1" Style="{StaticResource CommentEntryDataStyle}" />
+                <Button x:Name="Submit" Grid.Row="4" Grid.Column="1" Content="Submit" Style="{StaticResource CommentSubmitStyle}" />
+            </Grid>
+        </StackPanel>
+    </toolkit:DockPanel>
+</navigation:Page>

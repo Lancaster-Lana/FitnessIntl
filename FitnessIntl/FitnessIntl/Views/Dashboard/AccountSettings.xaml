@@ -1,0 +1,77 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="FitnessIntl.Views.AccountSettings"  
+             Title="Account Settings"
+             xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"  >
+    <!--<ContentPage.BindingContext>
+        <viewModels:AccountSettingsViewModel/>
+    </ContentPage.BindingContext>-->
+    <ContentPage.Resources>
+        <!--<Style x:Key="AccountSettingsHeaderStyle" TargetType="Entry">
+            <Setter Property="Text" Value="Account Settings" />
+        </Style>-->
+        <Style x:Key="AccountSettingsBorderStyle" TargetType="Frame">
+            <!--<Setter Property="BorderBrush" Value="#FF000000" />
+            <Setter Property="BorderThickness" Value="5" />
+            <Setter Property="CornerRadius" Value="5" />
+            <Setter Property="Width" Value="400" />-->
+            <Setter Property="HorizontalOptions" Value="Center" />
+        </Style>
+        <!--<Style x:Key="AccountSettingsContainerPanelStyle" TargetType="StackLayout">
+            <Setter Property="HorizontalOptions" Value="Center" />
+        </Style>
+        <Style x:Key="AccountSettingsStackPanelStyle" TargetType="StackLayout">
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
+        <Style x:Key="AccountSettingsTextStyle" TargetType="Editor">
+            <Setter Property="HorizontalOptions" Value="End" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+            <Setter Property="Width" Value="120" />
+            <Setter Property="FontAttributes" Value="Bold" />
+        </Style>
+        <Style x:Key="AccountSettingsTextBoxStyle" TargetType="Entry">
+            <Setter Property="HorizontalOptions" Value="End" />
+            <Setter Property="Margin" Value="10,10,0,0" />
+            <Setter Property="Width" Value="200" />
+        </Style>
+        <Style x:Key="AccountSettingsPasswordBoxStyle" TargetType="Entry">
+            <Setter Property="HorizontalOptions" Value="End" />
+            <Setter Property="Margin" Value="10,10,0,0" />
+            <Setter Property="Width" Value="200" />
+        </Style>
+        <Style x:Key="AccountSettingsButtonStyle" TargetType="Button">
+            <Setter Property="HorizontalOptions" Value="End" />
+            <Setter Property="Margin" Value="0,10" />
+        </Style>-->
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <StackLayout>
+            <Entry   />
+            <Frame Style="{StaticResource AccountSettingsBorderStyle}"  >
+                <StackLayout x:Name="AccountSettingsPanel" Style="{StaticResource AccountSettingsContainerPanelStyle}">
+                    <StackLayout Style="{StaticResource AccountSettingsStackPanelStyle}">
+                        <Editor Text="Email Address:" Style="{StaticResource AccountSettingsTextStyle}" />
+                        <Entry x:Name="Email" Text="{Binding Email}" Style="{StaticResource AccountSettingsTextBoxStyle}" />
+                    </StackLayout>
+                    <StackLayout Style="{StaticResource AccountSettingsStackPanelStyle}">
+                        <Editor Text="Password:" Style="{StaticResource AccountSettingsTextStyle}"  />
+                        <Entry IsPassword="True" x:Name="Password" Style="{StaticResource AccountSettingsPasswordBoxStyle}" />
+                    </StackLayout>
+                    <StackLayout Style="{StaticResource AccountSettingsStackPanelStyle}">
+                        <Editor Text="Confirm Password:" Style="{StaticResource AccountSettingsTextStyle}" />
+                        <Entry IsPassword="True" x:Name="ConfirmPassword" Style="{StaticResource AccountSettingsPasswordBoxStyle}" />
+                    </StackLayout>
+                    <StackLayout Style="{StaticResource AccountSettingsStackPanelStyle}">
+                        <Editor Text="Security Question:" Style="{StaticResource AccountSettingsTextStyle}"  />
+                        <Entry x:Name="SecurityQuestion" Text="{Binding SecurityQuestion}" Style="{StaticResource AccountSettingsTextBoxStyle}" />
+                    </StackLayout>
+                    <StackLayout Style="{StaticResource AccountSettingsStackPanelStyle}">
+                        <Editor Text="Security Answer:" Style="{StaticResource AccountSettingsTextStyle}" />
+                        <Entry IsPassword="True" x:Name="SecurityAnswer" Style="{StaticResource AccountSettingsPasswordBoxStyle}" />
+                    </StackLayout>
+                    <Button Text="Save Changes" x:Name="SaveChanges" Style="{StaticResource AccountSettingsButtonStyle}" />
+                </StackLayout>
+            </Frame>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

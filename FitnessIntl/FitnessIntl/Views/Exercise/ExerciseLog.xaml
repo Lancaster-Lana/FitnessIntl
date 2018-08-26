@@ -1,0 +1,300 @@
+﻿<NavigationPage x:Class="FitnessTrackerPlus.Views.Exercise.ExerciseLog" 
+           xmlns="http://xamarin.com/schemas/2014/forms"
+           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Toolkit"
+           xmlns:toolkit_input="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Input.Toolkit"
+           xmlns:toolkit_primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=System.Windows.Controls.Toolkit"
+           xmlns:data="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data"
+           xmlns:data_primitives="clr-namespace:System.Windows.Controls.Primitives;assembly=System.Windows.Controls.Data"
+           xmlns:ria_controls="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.DomainServices"
+           xmlns:fitnesstrackerplus="clr-namespace:FitnessTrackerPlus.Web.Services"
+           xmlns:fitnesstrackerplus_converters="clr-namespace:FitnessTrackerPlus.Converters"
+           xmlns:fitnesstrackerplus_calendar="clr-namespace:FitnessTrackerPlus.Utility">
+    <NavigationPage.Resources>
+        <fitnesstrackerplus:ExerciseContext x:Key="ExerciseContext" />
+        <Style x:Key="ExerciseLogHeaderStyle" BasedOn="{StaticResource HeaderTextStyle}" TargetType="TextBlock">
+            <Setter Property="Text" Value="Today's Exercise Log" />
+        </Style>
+        <Style x:Key="ExerciseNameLinkStyle" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="Foreground" Value="#FF0000FF" />
+            <Setter Property="TextDecorations" Value="Underline" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="MaxWidth" Value="200" />
+            <Setter Property="Padding" Value="5" />
+        </Style>
+        <Style x:Key="DeleteSelectedStyle" TargetType="Button">
+            <Setter Property="Content" Value="Delete Selected" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+        </Style>
+        <Style x:Key="CustomExerciseButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="10,0,0,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Content" Value="Custom Exercise" />
+        </Style>
+        <Style x:Key="ExerciseEntryStackPanelStyle" TargetType="StackPanel">
+            <Setter Property="Margin" Value="0,15,0,0" />
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
+        <Style x:Key="ExerciseEntryComboBoxStyle" TargetType="ComboBox">
+            <Setter Property="Margin" Value="0,0,10,0" />
+            <Setter Property="Height" Value="20" />
+        </Style>
+        <Style x:Key="ExerciseEntryHiddenComboBoxStyle" BasedOn="{StaticResource ExerciseEntryComboBoxStyle}" TargetType="ComboBox">
+            <Setter Property="Visibility" Value="Collapsed" />
+        </Style>
+        <Style x:Key="DataGridColumnHeaderCheckBox" TargetType="data_primitives:DataGridColumnHeader">
+            <Setter Property="Foreground" Value="#FF444444" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="10.5" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="SeparatorBrush" Value="#FFC9CACA" />
+            <Setter Property="Padding" Value="4,4,5,4" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="data_primitives:DataGridColumnHeader">
+                        <Grid Name="Root">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Rectangle x:Name="BackgroundRectangle" Stretch="Fill" Fill="#FF1F3B53" Grid.ColumnSpan="2" Grid.RowSpan="2"  />
+                            <Rectangle x:Name="BackgroundGradient" Stretch="Fill" Grid.ColumnSpan="2" Grid.RowSpan="2" >
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint=".7,0" EndPoint=".7,1">
+                                        <GradientStop Color="#FFFFFFFF" Offset="0.015" />
+                                        <GradientStop Color="#F9FFFFFF" Offset="0.375" />
+                                        <GradientStop Color="#E5FFFFFF" Offset="0.6" />
+                                        <GradientStop Color="#C6FFFFFF" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <CheckBox x:Name="CheckAll" Grid.RowSpan="3" Grid.ColumnSpan="3" Style="{StaticResource DataGridCheckBox}" Checked="CheckAll_Checked" Unchecked="CheckAll_Checked"  />
+                            <Rectangle Name="VerticalSeparator" Grid.RowSpan="2" Grid.Column="2" Width="1" VerticalAlignment="Stretch" Fill="{TemplateBinding SeparatorBrush}" Visibility="{TemplateBinding SeparatorVisibility}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </NavigationPage.Resources>
+    <toolkit:DockPanel Style="{StaticResource LogDockPanelStyle}">
+        <toolkit:DockPanel Style="{StaticResource HeaderDockPanelStyle}">
+            <TextBlock Style="{StaticResource ExerciseLogHeaderStyle}" />
+            <TextBlock x:Name="SelectedDate" Style="{StaticResource SelectedDateTextStyle}" />
+            <ProgressBar x:Name="ProgressBar" Style="{StaticResource ProgressBarStyle}" />
+        </toolkit:DockPanel>
+        <StackPanel Style="{StaticResource CalendarPanelStyle}">
+            <toolkit:GlobalCalendar x:Name="Calendar" Style="{StaticResource CalendarStyle}">
+                <toolkit:GlobalCalendar.CalendarDayButtonStyleSelector>
+                    <fitnesstrackerplus_calendar:ValidExerciseLogDateSelector>
+                        <fitnesstrackerplus_calendar:ValidExerciseLogDateSelector.ValidLogDateStyle>
+                            <Style BasedOn="{StaticResource BasicDayButtonStyle}" TargetType="toolkit_primitives:GlobalCalendarDayButton">
+                                <Setter Property="Background" Value="#FF999999" />
+                            </Style>
+                        </fitnesstrackerplus_calendar:ValidExerciseLogDateSelector.ValidLogDateStyle>
+                        <fitnesstrackerplus_calendar:ValidExerciseLogDateSelector.InvalidLogDateStyle>
+                            <Style BasedOn="{StaticResource BasicDayButtonStyle}" TargetType="toolkit_primitives:GlobalCalendarDayButton">
+                                <Setter Property="Background" Value="#FFFFFFFF" />
+                            </Style>
+                        </fitnesstrackerplus_calendar:ValidExerciseLogDateSelector.InvalidLogDateStyle>
+                    </fitnesstrackerplus_calendar:ValidExerciseLogDateSelector>
+                </toolkit:GlobalCalendar.CalendarDayButtonStyleSelector>
+            </toolkit:GlobalCalendar>
+        </StackPanel>
+        <StackPanel Style="{StaticResource LogPanelStyle}">
+            <StackPanel>
+                <StackPanel Style="{StaticResource ExerciseEntryStackPanelStyle}">
+                    <ComboBox x:Name="ExerciseTypes" Style="{StaticResource ExerciseEntryComboBoxStyle}" DisplayMemberPath="type_name" />
+                    <ComboBox x:Name="MuscleGroups" Style="{StaticResource ExerciseEntryHiddenComboBoxStyle}" DisplayMemberPath="group_name" />
+                    <ComboBox x:Name="Exercises" Style="{StaticResource ExerciseEntryHiddenComboBoxStyle}" DisplayMemberPath="exercise_name" />
+                    <Button x:Name="CustomExercise" Style="{StaticResource CustomExerciseButtonStyle}" />
+                </StackPanel>
+            </StackPanel>
+            <data:DataGrid x:Name="CardioLogGrid" Style="{StaticResource DataGrid}" ItemsSource="{Binding Path=Data, ElementName=CardioData}" >
+                <data:DataGrid.Columns>
+                    <data:DataGridTemplateColumn Header="Cardio" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Exercise.exercise_name}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Duration" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=duration, StringFormat='HH:mm:ss'}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                        <data:DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <toolkit_input:TimePicker x:Name="Duration" Value="{Binding Path=duration, Mode=TwoWay}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellEditingTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Calories" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=calories}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                        <data:DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Path=calories, Mode=TwoWay}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellEditingTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Distance" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=distance}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                        <data:DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Path=distance, Mode=TwoWay}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellEditingTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Incline" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=incline}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                        <data:DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Path=incline, Mode=TwoWay}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellEditingTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn HeaderStyle="{StaticResource DataGridColumnHeaderCheckBox}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox x:Name="DeleteEntry" Style="{StaticResource DataGridCheckBox}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                </data:DataGrid.Columns>
+            </data:DataGrid>
+            <ria_controls:DomainDataSource x:Name="CardioData" DomainContext="{StaticResource ExerciseContext}" QueryName="GetExerciseLogEntries" AutoLoad="True">
+                <ria_controls:DomainDataSource.QueryParameters>
+                    <ria_controls:Parameter ParameterName="entry_date" Value="{Binding ElementName=Calendar, Path=SelectedDate}" />
+                </ria_controls:DomainDataSource.QueryParameters>
+                <ria_controls:DomainDataSource.FilterDescriptors>
+                        <ria_controls:FilterDescriptor PropertyPath="Exercise.ExerciseType.type_name" Operator="IsEqualTo" Value="Cardio" />
+                </ria_controls:DomainDataSource.FilterDescriptors>
+            </ria_controls:DomainDataSource>
+            <data:DataGrid x:Name="WeightTrainingLogGrid" Style="{StaticResource DataGrid}" ItemsSource="{Binding Path=Data, ElementName=WeightTrainingData}">
+                <data:DataGrid.Columns>
+                    <data:DataGridTemplateColumn Header="Weight Training" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Exercise.exercise_name}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Reps" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=reps}" Style="{StaticResource DataGridTextBlock}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                        <data:DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Path=reps, Mode=TwoWay}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellEditingTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Weight" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=weight}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                        <data:DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Path=weight, Mode=TwoWay}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellEditingTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn HeaderStyle="{StaticResource DataGridColumnHeaderCheckBox}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox x:Name="DeleteEntry" Style="{StaticResource DataGridCheckBox}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                </data:DataGrid.Columns>
+            </data:DataGrid>
+            <ria_controls:DomainDataSource x:Name="WeightTrainingData" DomainContext="{StaticResource ExerciseContext}" QueryName="GetExerciseLogEntries" AutoLoad="True">
+                <ria_controls:DomainDataSource.QueryParameters>
+                    <ria_controls:Parameter ParameterName="entry_date" Value="{Binding ElementName=Calendar, Path=SelectedDate}" />
+                </ria_controls:DomainDataSource.QueryParameters>
+                <ria_controls:DomainDataSource.FilterDescriptors>
+                        <ria_controls:FilterDescriptor PropertyPath="Exercise.exercise_type" Operator="IsEqualTo" Value="2" />
+                </ria_controls:DomainDataSource.FilterDescriptors>
+            </ria_controls:DomainDataSource>
+            <data:DataGrid x:Name="ActivityLogGrid" Style="{StaticResource DataGrid}" ItemsSource="{Binding Path=Data, ElementName=ActivityData}">
+                <data:DataGrid.Columns>
+                    <data:DataGridTemplateColumn Header="Activities" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=Exercise.exercise_name}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Duration" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=duration, StringFormat='HH:mm:ss'}" Style="{StaticResource DataGridTextBlockCentered}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                        <data:DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <toolkit_input:TimePicker x:Name="Duration" Value="{Binding Path=duration, Mode=TwoWay, Converter={StaticResource DurationConverter}}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellEditingTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn Header="Calories" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Path=calories}" Style="{StaticResource DataGridTextBlock}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                        <data:DataGridTemplateColumn.CellEditingTemplate>
+                            <DataTemplate>
+                                <TextBox Text="{Binding Path=calories, Mode=TwoWay}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellEditingTemplate>
+                    </data:DataGridTemplateColumn>
+                    <data:DataGridTemplateColumn HeaderStyle="{StaticResource DataGridColumnHeaderCheckBox}">
+                        <data:DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox x:Name="DeleteEntry" Style="{StaticResource DataGridCheckBox}" />
+                            </DataTemplate>
+                        </data:DataGridTemplateColumn.CellTemplate>
+                    </data:DataGridTemplateColumn>
+                </data:DataGrid.Columns>
+            </data:DataGrid>
+            <ria_controls:DomainDataSource x:Name="ActivityData" DomainContext="{StaticResource ExerciseContext}" QueryName="GetExerciseLogEntries" AutoLoad="True">
+                <ria_controls:DomainDataSource.QueryParameters>
+                    <ria_controls:Parameter ParameterName="entry_date" Value="{Binding ElementName=Calendar, Path=SelectedDate}" />
+                </ria_controls:DomainDataSource.QueryParameters>
+                <ria_controls:DomainDataSource.FilterDescriptors>
+                        <ria_controls:FilterDescriptor PropertyPath="Exercise.exercise_type" Operator="IsEqualTo" Value="3" />
+                </ria_controls:DomainDataSource.FilterDescriptors>
+            </ria_controls:DomainDataSource>
+            <Button x:Name="DeleteSelected" Style="{StaticResource DeleteSelectedStyle}" />
+        </StackPanel>
+    </toolkit:DockPanel>
+</NavigationPage>

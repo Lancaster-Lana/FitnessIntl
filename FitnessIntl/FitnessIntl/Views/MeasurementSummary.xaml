@@ -1,0 +1,71 @@
+﻿<ContentView x:Class="FitnessIntl.Views.MeasurementSummary"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:FitnessTrackerPlus.Converters" >
+    <ContentView.Resources>
+        <Style x:Key="MeasurementSummaryTextStyle" TargetType="Editor">
+            <Setter Property="HorizontalOptions" Value="End" />
+            <Setter Property="Margin" Value="10,5,0,0" />
+        </Style>
+        <Style x:Key="MeasurementSummaryStackPanelStyle" TargetType="StackLayout">
+            <Setter Property="HorizontalOptions" Value="End" />
+            <Setter Property="Margin" Value="0,0,10,5" />
+        </Style>
+        <Style x:Key="MeasurementListStyle" TargetType="StackLayout">
+            <Setter Property="BackgroundColor" Value="Transparent" />
+            <Setter Property="Margin" Value="10,10,0,0" />
+            <Setter Property="MinimumHeightRequest" Value="150" />
+        </Style>
+        <Style x:Key="MeasurementListItemStyle" TargetType="Editor">
+            <Setter Property="Margin" Value="0,5,0,0" />
+        </Style>
+        <Style x:Key="MeasurementSummaryImageBorderStyle" TargetType="Frame">
+            <Setter Property="BackgroundColor" Value="#FFFFFFFF" />
+            <Setter Property="WidthRequest" Value="175" />
+            <Setter Property="HeightRequest" Value="200" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+        </Style>
+        <Style x:Key="MeasurementSummaryImageStyle" TargetType="Image">
+            <Setter Property="Aspect" Value="AspectFill" />
+        </Style>
+        <Style x:Key="MeasurementSummaryImageTextStyle" TargetType="Label">
+            <Setter Property="Margin" Value="0,10,0,0" />
+            <Setter Property="HorizontalOptions" Value="Center" />
+        </Style>
+    </ContentView.Resources>
+    <Frame >
+        <StackLayout  >
+            <Frame>
+                <Label Text="Measurement Summary" />
+            </Frame>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="5*" />
+                    <ColumnDefinition Width="5*" />
+                </Grid.ColumnDefinitions>
+                <ListView x:Name="MeasurementList" Grid.Column="0"
+                          > <!--ItemsSource="{Binding Path=Values}"--> 
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <StackLayout HorizontalOptions="StartAndExpand" Orientation="Horizontal">
+                                    <Image WidthRequest="44" HeightRequest="44" Source="{Binding Photo}" />
+                                    <StackLayout Padding="5,0,0,0" VerticalOptions="StartAndExpand" Orientation="Vertical" >
+                                        <!--<Label Text="{Binding Name}" VerticalTextAlignment="Center" Font="Medium" />
+                                        <Label Text="{Binding Title}" VerticalTextAlignment="Center" Font="Micro" />-->
+                                    </StackLayout>
+                                </StackLayout>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <StackLayout Grid.Column="1" Style="{StaticResource MeasurementSummaryStackPanelStyle}">
+                    <Frame Style="{StaticResource MeasurementSummaryImageBorderStyle}">
+                        <Image x:Name="CurrentImage" Style="{StaticResource MeasurementSummaryImageStyle}" />
+                    </Frame>
+                    <Label Text="Current Image" Style="{StaticResource MeasurementSummaryImageTextStyle}" />
+                </StackLayout>
+            </Grid>
+        </StackLayout>
+    </Frame>
+</ContentView>

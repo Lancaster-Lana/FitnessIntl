@@ -1,0 +1,38 @@
+﻿<ContentPage x:Class="FitnessIntl.Views.MainDashboard" 
+           xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+           xmlns:fitnesstrackerplus="clr-namespace:FitnessIntl.Views;" 
+           Title="Fitness Dashboard">
+    <ContentPage.Resources>
+        <Style x:Key="WelcomeTextStyle" TargetType="Editor">
+            <Setter Property="FontSize" Value="14" />
+        </Style>
+        <Style x:Key="CurrentDateStyle" BasedOn="{StaticResource WelcomeTextStyle}" TargetType="Editor">
+            <Setter Property="Margin" Value="0,0,10,0" />
+            <!--<Setter Property="toolkit:DockPanel.Dock" Value="End" />-->
+        </Style>
+        <Style x:Key="SummaryControlStyle" TargetType="ContentView">
+            <Setter Property="Margin" Value="10" />
+        </Style>
+    </ContentPage.Resources>
+    <ContentPage.Content>
+        <Grid x:Name="LayoutRoot">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition Height=".5*" />
+                <RowDefinition Height=".5*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width=".5*" />
+                <ColumnDefinition Width=".5*" />
+            </Grid.ColumnDefinitions>
+        <!--<toolkit:DockPanel Style="{StaticResource WelcomeAreaDockStyle}" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+            <Editor x:Name="UserName" Style="{StaticResource WelcomeTextStyle}" />
+            <Editor x:Name="CurrentDate" Style="{StaticResource CurrentDateStyle}" />
+        </toolkit:DockPanel>-->
+            <!--<fitnesstrackerplus:Announcements x:Name="Announcements" Style="{StaticResource SummaryControlStyle}" Grid.Row="1" Grid.Column="0" />
+            <fitnesstrackerplus:MeasurementSummary x:Name="MeasurementSummary" Style="{StaticResource SummaryControlStyle}" Grid.Row="1" Grid.Column="1" />
+            <fitnesstrackerplus:FoodSummary x:Name="FoodSummary" Style="{StaticResource SummaryControlStyle}" Grid.Row="2" Grid.Column="0" />
+            <fitnesstrackerplus:ExerciseSummary x:Name="ExerciseSummary" Style="{StaticResource SummaryControlStyle}" Grid.Row="2" Grid.Column="1" />-->
+        </Grid>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage Title="Account Settings"
+             xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="FitnessIntl.Views.AccountSettings"  >
+    <ContentPage.Content>
+        <StackLayout x:Name="AccountSettingsPanel" Orientation="Vertical" >
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Email Address:"  />
+                <Entry x:Name="Email" Text="{Binding Email}"  />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Password:"   />
+                <Entry IsPassword="True" x:Name="Password" Text="{Binding Password}" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Confirm Password:"   />
+                <Entry IsPassword="True" x:Name="ConfirmPassword" Text="{Binding ConfirmPassword}" />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal" >
+                <Label Text="Security Question:"   />
+                <Entry x:Name="SecurityQuestion" Text="{Binding SecurityQuestion}"  />
+            </StackLayout>
+            <StackLayout Orientation="Horizontal">
+                <Label Text="Security Answer:"  />
+                <Entry x:Name="SecurityAnswer" Text="{Binding SecurityAnswer}" />
+            </StackLayout>
+            <Button Text="Save Changes" x:Name="SaveChanges"  />
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

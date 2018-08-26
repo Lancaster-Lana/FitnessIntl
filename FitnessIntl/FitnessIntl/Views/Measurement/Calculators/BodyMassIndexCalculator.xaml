@@ -1,0 +1,37 @@
+﻿<ContentView x:Class="FitnessTrackerPlus.Views.Measurement.Calculators.BodyMassIndexCalculator"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:data_dataform="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Data.DataForm.Toolkit">
+    <ContentView.Resources>
+        <Style x:Key="BodyMassIndexFormStyle" TargetType="data_dataform:DataForm">
+            <Setter Property="AutoEdit" Value="True" />
+            <Setter Property="AutoGenerateFields" Value="False" />
+            <Setter Property="Foreground" Value="#FF000000" />
+        </Style>
+        <Style x:Key="SmallTextBoxStyle" TargetType="TextBox">
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="Width" Value="60" />
+        </Style>
+    </ContentView.Resources>
+    <data_dataform:DataForm x:Name="BodyMassIndexForm" Style="{StaticResource BodyMassIndexFormStyle}">
+        <data_dataform:DataForm.EditTemplate>
+            <DataTemplate>
+                <StackPanel>
+                    <data_dataform:DataField Label="Unit of Measure">
+                        <ComboBox x:Name="Units">
+                            <ComboBoxItem Content="Standard (lbs, in)" IsSelected="True" />
+                            <ComboBoxItem Content="Metric (kg, cm)" />
+                        </ComboBox>
+                    </data_dataform:DataField>
+                    <data_dataform:DataField Label="Height">
+                        <TextBox x:Name="HeightText" Text="{Binding Path=Height, Mode=TwoWay}" Style="{StaticResource SmallTextBoxStyle}" />
+                    </data_dataform:DataField>
+                    <data_dataform:DataField Label="Weight">
+                        <TextBox x:Name="WeightText" Text="{Binding Path=Weight, Mode=TwoWay}" Style="{StaticResource SmallTextBoxStyle}" />
+                    </data_dataform:DataField>
+                </StackPanel>
+            </DataTemplate>
+        </data_dataform:DataForm.EditTemplate>
+    </data_dataform:DataForm>
+</ContentView>

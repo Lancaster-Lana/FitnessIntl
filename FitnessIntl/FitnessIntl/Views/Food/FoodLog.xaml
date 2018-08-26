@@ -1,0 +1,212 @@
+﻿<NavigationPage x:Class="FitnessTrackerPlus.Views.Food.FoodLog" 
+           xmlns="http://xamarin.com/schemas/2014/forms"
+           xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+           
+           xmlns:fitnesstrackerplus_calendar="clr-namespace:FitnessTrackerPlus.Utility"
+           xmlns:fitnesstrackerplus_data="clr-namespace:FitnessTrackerPlus.Web.Services">
+    <NavigationPage.Resources>
+        <Style x:Key="FoodLogHeaderStyle" BasedOn="{StaticResource HeaderTextStyle}" TargetType="TextBlock">
+            <Setter Property="Text" Value="Today's Food Log" />
+        </Style>
+        <Style x:Key="FoodNameStyle" TargetType="TextBlock">
+            <Setter Property="TextWrapping" Value="Wrap" />
+            <Setter Property="MaxWidth" Value="200" />
+            <Setter Property="Padding" Value="5" />
+        </Style>
+        <Style x:Key="FoodSearchingTextStyle" BasedOn="{StaticResource LogPanelSearchingTextStyle}" TargetType="TextBlock">
+            <Setter Property="Text" Value="Searching Foods..." />
+        </Style>
+        <Style x:Key="DeleteSelectedStyle" TargetType="Button">
+            <Setter Property="Content" Value="Delete Selected" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Margin" Value="0,10,0,0" />
+        </Style>
+        <Style x:Key="CustomFoodButtonStyle" TargetType="Button">
+            <Setter Property="Margin" Value="10,0,0,0" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="10" />
+            <Setter Property="Content" Value="Custom Food" />
+        </Style>
+        <Style x:Key="FoodEntryStackPanelStyle" TargetType="StackPanel">
+            <Setter Property="Margin" Value="0,15,0,0" />
+            <Setter Property="Orientation" Value="Horizontal" />
+        </Style>
+        <Style x:Key="DataGridColumnHeaderCheckBox" TargetType="data_primitives:DataGridColumnHeader">
+            <Setter Property="Foreground" Value="#FF444444" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="FontSize" Value="10.5" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="IsTabStop" Value="False" />
+            <Setter Property="SeparatorBrush" Value="#FFC9CACA" />
+            <Setter Property="Padding" Value="4,4,5,4" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="data_primitives:DataGridColumnHeader">
+                        <Grid Name="Root">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Rectangle x:Name="BackgroundRectangle" Stretch="Fill" Fill="#FF1F3B53" Grid.ColumnSpan="2" Grid.RowSpan="2"  />
+                            <Rectangle x:Name="BackgroundGradient" Stretch="Fill" Grid.ColumnSpan="2" Grid.RowSpan="2" >
+                                <Rectangle.Fill>
+                                    <LinearGradientBrush StartPoint=".7,0" EndPoint=".7,1">
+                                        <GradientStop Color="#FFFFFFFF" Offset="0.015" />
+                                        <GradientStop Color="#F9FFFFFF" Offset="0.375" />
+                                        <GradientStop Color="#E5FFFFFF" Offset="0.6" />
+                                        <GradientStop Color="#C6FFFFFF" Offset="1" />
+                                    </LinearGradientBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
+                            <CheckBox x:Name="CheckAll" Grid.RowSpan="3" Grid.ColumnSpan="3" Style="{StaticResource DataGridCheckBox}" Checked="CheckAll_Checked" Unchecked="CheckAll_Checked"  />
+                            <Rectangle Name="VerticalSeparator" Grid.RowSpan="2" Grid.Column="2" Width="1" VerticalAlignment="Stretch" Fill="{TemplateBinding SeparatorBrush}" Visibility="{TemplateBinding SeparatorVisibility}" />
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="RightClickMenuStyle" TargetType="Canvas">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Setter Property="Width" Value="150" />
+            <Setter Property="Canvas.ZIndex" Value="100" />
+        </Style>
+        <Style x:Key="RightClickMenuItemStyle" TargetType="TextBlock">
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="Cursor" Value="Hand" />
+        </Style>
+        <Style x:Key="RightClickMenuBorderStyle" TargetType="Border">
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="Margin" Value="5" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="Canvas.Top" Value="0" />
+            <Setter Property="Canvas.Left" Value="0" />
+            <Setter Property="BorderBrush" Value="#FF000000" />
+            <Setter Property="Background" Value="#FFFFFFFF" />
+        </Style>
+    </NavigationPage.Resources>
+    <toolkit:DockPanel Style="{StaticResource LogDockPanelStyle}">
+        <toolkit:DockPanel Style="{StaticResource HeaderDockPanelStyle}">
+            <TextBlock Style="{StaticResource FoodLogHeaderStyle}" />
+            <TextBlock x:Name="SelectedDate" Style="{StaticResource SelectedDateTextStyle}" />
+            <ProgressBar x:Name="ProgressBar" Style="{StaticResource ProgressBarStyle}" />
+        </toolkit:DockPanel>
+        <StackPanel Style="{StaticResource CalendarPanelStyle}">
+            <toolkit:GlobalCalendar x:Name="Calendar" Style="{StaticResource CalendarStyle}">
+                <toolkit:GlobalCalendar.CalendarDayButtonStyleSelector>
+                    <fitnesstrackerplus_calendar:ValidLogDateSelector>
+                        <fitnesstrackerplus_calendar:ValidLogDateSelector.ValidLogDateStyle>
+                            <Style BasedOn="{StaticResource BasicDayButtonStyle}" TargetType="toolkit_primitives:GlobalCalendarDayButton">
+                                <Setter Property="Background" Value="#FF999999" />
+                            </Style>
+                        </fitnesstrackerplus_calendar:ValidLogDateSelector.ValidLogDateStyle>
+                        <fitnesstrackerplus_calendar:ValidLogDateSelector.InvalidLogDateStyle>
+                            <Style BasedOn="{StaticResource BasicDayButtonStyle}" TargetType="toolkit_primitives:GlobalCalendarDayButton">
+                                <Setter Property="Background" Value="#FFFFFFFF" />
+                            </Style>
+                        </fitnesstrackerplus_calendar:ValidLogDateSelector.InvalidLogDateStyle>
+                    </fitnesstrackerplus_calendar:ValidLogDateSelector>
+                </toolkit:GlobalCalendar.CalendarDayButtonStyleSelector>
+            </toolkit:GlobalCalendar>
+        </StackPanel>
+        <StackPanel Style="{StaticResource LogPanelStyle}">
+            <StackPanel>
+                <StackPanel Style="{StaticResource FoodEntryStackPanelStyle}">
+                    <TextBlock Text="Search" Style="{StaticResource LogPanelLabelStyle}" />
+                    <controls_input:AutoCompleteBox x:Name="AutoComplete" Style="{StaticResource LogPanelAutoCompleteBox}">
+                        <controls_input:AutoCompleteBox.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <ContentPresenter Content="{Binding name}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </controls_input:AutoCompleteBox.ItemTemplate>
+                    </controls_input:AutoCompleteBox>
+                    <Button x:Name="CustomFood" Style="{StaticResource CustomFoodButtonStyle}" />
+                    <TextBlock x:Name="SearchingText" Style="{StaticResource FoodSearchingTextStyle}" />
+                </StackPanel>
+            </StackPanel>
+            <StackPanel>
+                <data:DataGrid x:Name="FoodLogGrid" Style="{StaticResource DataGrid}">
+                    <data:DataGrid.Columns>
+                        <data:DataGridTemplateColumn Header="Foods" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                            <data:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Food.name}" Style="{StaticResource FoodNameStyle}" />
+                                </DataTemplate>
+                            </data:DataGridTemplateColumn.CellTemplate>
+                        </data:DataGridTemplateColumn>
+                        <data:DataGridTemplateColumn Header="Servings" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                            <data:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=servings}" Style="{StaticResource DataGridTextBlockCentered}" />
+                                </DataTemplate>
+                            </data:DataGridTemplateColumn.CellTemplate>
+                            <data:DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <TextBox Text="{Binding Path=servings, Mode=TwoWay}" />
+                                </DataTemplate>
+                            </data:DataGridTemplateColumn.CellEditingTemplate>
+                        </data:DataGridTemplateColumn>
+                        <data:DataGridTemplateColumn Header="Serving Size" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                            <data:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Food.serving_size}" Style="{StaticResource DataGridTextBlock}" />
+                                </DataTemplate>
+                            </data:DataGridTemplateColumn.CellTemplate>
+                        </data:DataGridTemplateColumn>
+                        <data:DataGridTemplateColumn Header="Cal" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                            <data:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Food.calories}" Style="{StaticResource DataGridTextBlockCentered}" />
+                                </DataTemplate>
+                            </data:DataGridTemplateColumn.CellTemplate>
+                        </data:DataGridTemplateColumn>
+                        <data:DataGridTemplateColumn Header="Fat" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                            <data:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Food.fat}" Style="{StaticResource DataGridTextBlockCentered}" />
+                                </DataTemplate>
+                            </data:DataGridTemplateColumn.CellTemplate>
+                        </data:DataGridTemplateColumn>
+                        <data:DataGridTemplateColumn Header="Carb" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                            <data:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Food.carbohydrate}" Style="{StaticResource DataGridTextBlockCentered}" />
+                                </DataTemplate>
+                            </data:DataGridTemplateColumn.CellTemplate>
+                        </data:DataGridTemplateColumn>
+                        <data:DataGridTemplateColumn Header="Pro" HeaderStyle="{StaticResource DataGridColumnHeaderCentered}">
+                            <data:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock Text="{Binding Path=Food.protein}" Style="{StaticResource DataGridTextBlockCentered}" />
+                                </DataTemplate>
+                            </data:DataGridTemplateColumn.CellTemplate>
+                        </data:DataGridTemplateColumn>
+                        <data:DataGridTemplateColumn HeaderStyle="{StaticResource DataGridColumnHeaderCheckBox}">
+                            <data:DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <CheckBox x:Name="DeleteEntry" Style="{StaticResource DataGridCheckBox}" />
+                                </DataTemplate>
+                            </data:DataGridTemplateColumn.CellTemplate>
+                        </data:DataGridTemplateColumn>
+                    </data:DataGrid.Columns>
+                </data:DataGrid>
+                <toolkit:ContextMenuService.ContextMenu>
+                    <toolkit:ContextMenu>
+                        <toolkit:MenuItem Header="Delete Selected Entries" Click="DeleteSelected_Click" />
+                        <toolkit:MenuItem Header="Cancel" />
+                    </toolkit:ContextMenu>
+                </toolkit:ContextMenuService.ContextMenu>
+            </StackPanel>
+            <Button x:Name="DeleteSelected" Style="{StaticResource DeleteSelectedStyle}" />
+        </StackPanel>
+    </toolkit:DockPanel>
+</NavigationPage>

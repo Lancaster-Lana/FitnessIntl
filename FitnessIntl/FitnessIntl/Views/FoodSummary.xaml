@@ -1,0 +1,39 @@
+﻿<ContentView x:Class="FitnessIntl.Views.FoodSummary"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:FitnessIntl.Converters" >
+    <ContentView.Resources>
+        <converters:StringFormatConverter x:Key="SummaryConverter" />
+        <Style x:Key="IndentedSummaryTextStyle"  TargetType="Editor">
+            <Setter Property="HorizontalOptions" Value="End" />
+            <!--<Setter Property="FontArguments" Value="Normal" />-->
+        </Style>
+    </ContentView.Resources>
+    <Frame WidthRequest="2" BackgroundColor="Aqua">
+        <StackLayout>
+            <Frame>
+                <Label Text="Food Summary" />
+            </Frame>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <StackLayout Grid.Column="0" Style="{StaticResource SummaryTextStackPanelStyle}">
+                    <!--<Editor Text="{Binding Path=TotalCalories, Converter={StaticResource SummaryConverter}, ConverterParameter='Total Calories Consumed: {0}'}" Style="{StaticResource SummaryTextStyle}" />
+                    <Editor Text="{Binding Path=TotalFat, Converter={StaticResource SummaryConverter}, ConverterParameter='Fat: {0}g'}" Style="{StaticResource IndentedSummaryTextStyle}" />
+                    <Editor Text="{Binding Path=TotalCarbohydrate, Converter={StaticResource SummaryConverter}, ConverterParameter='Carbohydrate: {0}g'}" Style="{StaticResource IndentedSummaryTextStyle}" />
+                    <Editor Text="{Binding Path=TotalProtein, Converter={StaticResource SummaryConverter}, ConverterParameter='Protein: {0}g'}" Style="{StaticResource IndentedSummaryTextStyle}" />-->
+                </StackLayout>
+                <!--<charting:Chart x:Name="FoodSummaryChart" Grid.Column="1" Style="{StaticResource FoodSummaryChartStyle}">
+                    <charting:Chart.Series>
+                        <charting:PieSeries ItemsSource="{Binding}" DependentValuePath="Value" IndependentValuePath="Key" />
+                    </charting:Chart.Series>
+                </charting:Chart>-->
+            </Grid>
+        </StackLayout>
+    </Frame>
+</ContentView>

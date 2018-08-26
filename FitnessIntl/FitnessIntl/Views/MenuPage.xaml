@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage x:Class="FitnessIntl.Views.MenuPage"
+             xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" >
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Logout" Clicked="OnLogoutButtonClicked" />
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+		<Grid BackgroundColor="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="150" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Image Source="bg.png" Aspect="AspectFill" />
+            <StackLayout Padding="0" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand">
+                <!--<controls:CircleImage BorderColor="White" BorderThickness="2" Source="profile.jpg" Aspect="AspectFill" WidthRequest="85" HeightRequest="85" />-->
+                <Label Text="Fitness International" TextColor="White" FontSize="Large" />
+            </StackLayout>
+            <StackLayout Margin="0" Grid.Row="1" Spacing="1">
+                <ListView x:Name ="lstView" IsGroupingEnabled="true"
+                          GroupDisplayBinding="{Binding LongName}" 
+                          GroupShortNameBinding="{Binding ShortName}" >
+                    <ListView.GroupHeaderTemplate>
+                        <DataTemplate>
+                            <ViewCell>
+                                <Label Text="{Binding LongName}" TextColor="Red" FontSize="Large" BackgroundColor="Blue"/>
+                            </ViewCell>
+                        </DataTemplate>
+                    </ListView.GroupHeaderTemplate>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextCell Text="{Binding Name}" Detail = "{Binding Comment}"  />
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+                <!--<local:NavigationItem Text="Page One" Icon="fa-archive" Command="{Binding NavigationCommand}" CommandParameter="1" />
+				<ContentView HeightRequest="1" BackgroundColor="Gray" />
+				<local:NavigationItem Text="Page Two" Icon="fa-cog" Command="{Binding NavigationCommand}" CommandParameter="2" />-->
+            </StackLayout>
+        </Grid>
+	</ContentPage.Content>
+</ContentPage>

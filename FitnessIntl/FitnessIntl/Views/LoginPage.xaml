@@ -1,0 +1,21 @@
+﻿<ContentPage xmlns="http://xamarin.com/schemas/2014/forms" xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             x:Class="FitnessIntl.Views.LoginPage" Title="Login" >
+	<ContentPage.ToolbarItems>
+		<ToolbarItem Text="Sign Up" Clicked="OnSignUpButtonClicked" />
+	</ContentPage.ToolbarItems>
+	<ContentPage.Content>
+		<StackLayout VerticalOptions="StartAndExpand" Margin="0">
+			<Label Text="Username" />
+			<Entry x:Name="usernameEntry" Placeholder="username" />
+			<Label Text="Password" />
+			<Entry x:Name="passwordEntry" IsPassword="true" />
+            <Button x:Name="loginButton" Text="Login" Clicked="OnLoginButtonClicked" />
+			<Label x:Name="messageLabel" />
+
+            <StackLayout Orientation="Horizontal" HorizontalOptions="StartAndExpand" Margin="0">
+                <Button x:Name="fLoginButton" Text="Facebook" Clicked="OnFacebookLoginButtonClicked" />
+                <Button x:Name="gLoginButton" Text="Google" Clicked="OnGoogleLoginButtonClicked" />
+            </StackLayout>
+         </StackLayout>
+	</ContentPage.Content>
+</ContentPage>
